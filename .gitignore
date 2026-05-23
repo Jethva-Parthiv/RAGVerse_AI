@@ -1,0 +1,25 @@
+.env
+__pycache__/
+*.pyc
+faiss_index/
+.vscode/
+
+# Virtual Environment
+venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment Variables
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# LangSmith
+.langchain.db
+
+# OS Files
+.DS_Store
