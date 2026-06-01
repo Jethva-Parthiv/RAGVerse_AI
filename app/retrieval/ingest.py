@@ -1,4 +1,6 @@
+import shutil
 import os
+import uuid
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -10,7 +12,8 @@ from langchain_community.vectorstores import FAISS
 from app.core.settings import (
     CHUNK_SIZE,
     CHUNK_OVERLAP,
-    FAISS_PATH
+    FAISS_PATH,
+    RAW_DATA_DIR
 )
 
 from app.llm.embeddings import (
@@ -23,6 +26,36 @@ load_dotenv()
 os.environ["LANGCHAIN_TRACING_V2"] = "false"
 
 
+# ==========================================
+# LOAD PDF FILES
+# ==========================================
+
+def get_pdf_files():
+    """
+    Get all PDF files from data directory.
+    """
+
+    data_path = Path(RAW_DATA_DIR)
+
+    if not data_path.exists():
+        raise FileNotFoundError(
+            f"Data folder not found: {RAW_DATA_DIR}"
+        )
+
+    pdf_files = list(data_path.glob("*.pdf"))
+
+    if not pdf_files:
+        raise ValueError(
+            "No PDF files found in data folder."
+        )
+
+    return pdf_files
+
+
+# ==========================================
+# LOAD DOCUMENTS
+# ==========================================
+
 def load_pdf(file_path: str):
     """
     Load PDF documents.
@@ -32,6 +65,52 @@ def load_pdf(file_path: str):
 
     return loader.load()
 
+
+def load_all_documents():
+    """
+    Load all PDF documents.
+    """
+
+    all_documents = []
+
+    pdf_files = get_pdf_files()
+
+    for pdf_file in pdf_files:
+
+        print(f"\nLoading: {pdf_file.name}")
+
+        documents = load_pdf(str(pdf_file))
+
+        # ==========================================
+        # ADD DOCUMENT METADATA
+        # ==========================================
+
+        document_id = str(uuid.uuid4())
+
+        for page_number, doc in enumerate(documents, start=1):
+
+            doc.metadata.update({
+                "source_file": pdf_file.name,
+                "document_id": document_id,
+                "page_number": page_number
+            })
+
+            # doc.metadata.update({
+            #     "source": pdf_file.name,
+            #     "document_id": document_id,
+            #     "page": page_number
+            # })
+
+        all_documents.extend(documents)
+
+        print(f"Loaded {len(documents)} pages")
+
+    return all_documents
+
+
+# ==========================================
+# SPLIT DOCUMENTS
+# ==========================================
 
 def split_documents(documents):
     """
@@ -43,8 +122,22 @@ def split_documents(documents):
         chunk_overlap=CHUNK_OVERLAP
     )
 
-    return splitter.split_documents(documents)
+    chunks = splitter.split_documents(documents)
 
+    # ==========================================
+    # ADD CHUNK METADATA
+    # ==========================================
+
+    for index, chunk in enumerate(chunks):
+
+        chunk.metadata["chunk_id"] = index
+
+    return chunks
+
+
+# ==========================================
+# CREATE EMBEDDINGS
+# ==========================================
 
 def create_embeddings(chunks, embedding_model):
     """
@@ -76,9 +169,12 @@ def create_embeddings(chunks, embedding_model):
     return texts, embeddings
 
 
+
+
 def create_or_update_vector_store(chunks):
     """
-    Create new FAISS DB or update existing one.
+    Always create a fresh FAISS index.
+    Deletes old index if it exists.
     """
 
     embedding_model = get_gemini_embedding_model()
@@ -89,48 +185,36 @@ def create_or_update_vector_store(chunks):
     )
 
     # ==========================================
-    # LOAD EXISTING VECTOR STORE
+    # DELETE OLD FAISS INDEX
     # ==========================================
 
     if os.path.exists(FAISS_PATH):
 
-        print("\nLoading existing FAISS index...")
+        print("\nDeleting existing FAISS index...")
 
-        db = FAISS.load_local(
-            FAISS_PATH,
-            embedding_model,
-            allow_dangerous_deserialization=True
-        )
-
-        print("Appending new vectors...")
-
-        db.add_embeddings(
-            text_embeddings=list(zip(texts, embeddings)),
-            metadatas=[
-                chunk.metadata
-                for chunk in chunks
-            ]
-        )
+        shutil.rmtree(FAISS_PATH)
 
     # ==========================================
     # CREATE NEW VECTOR STORE
     # ==========================================
 
-    else:
+    print("\nCreating new FAISS index...")
 
-        print("\nCreating new FAISS index...")
-
-        db = FAISS.from_embeddings(
-            text_embeddings=list(zip(texts, embeddings)),
-            embedding=embedding_model,
-            metadatas=[
-                chunk.metadata
-                for chunk in chunks
-            ]
-        )
+    db = FAISS.from_embeddings(
+        text_embeddings=list(zip(texts, embeddings)),
+        embedding=embedding_model,
+        metadatas=[
+            chunk.metadata
+            for chunk in chunks
+        ]
+    )
 
     return db
 
+
+# ==========================================
+# SAVE VECTOR STORE
+# ==========================================
 
 def save_vector_store(db):
     """
@@ -145,31 +229,26 @@ def save_vector_store(db):
     db.save_local(FAISS_PATH)
 
 
-def ingest(file_path: str):
+# ==========================================
+# INGESTION PIPELINE
+# ==========================================
+
+def ingest():
     """
     Complete ingestion pipeline.
     """
 
-    print("\nLoading PDF...")
+    print("\nLoading PDF documents...")
 
-    documents = load_pdf(file_path)
+    documents = load_all_documents()
 
-    print(f"Loaded {len(documents)} pages")
+    print(f"\nTotal pages loaded: {len(documents)}")
 
     print("\nSplitting documents...")
 
     chunks = split_documents(documents)
 
     print(f"Created {len(chunks)} chunks")
-
-    # ==========================================
-    # ADD SOURCE METADATA
-    # ==========================================
-
-    file_name = Path(file_path).name
-
-    for chunk in chunks:
-        chunk.metadata["source_file"] = file_name
 
     # ==========================================
     # VECTOR STORE
@@ -191,18 +270,4 @@ def ingest(file_path: str):
 
 if __name__ == "__main__":
 
-    pdf_path = input(
-        "\nEnter PDF path: "
-    ).strip()
-
-    if not pdf_path:
-        print("\nPlease provide a PDF path.")
-
-    elif not os.path.exists(pdf_path):
-        print("\nInvalid PDF path.")
-
-    elif not pdf_path.endswith(".pdf"):
-        print("\nOnly PDF files are supported.")
-
-    else:
-        ingest(pdf_path)
+    ingest()

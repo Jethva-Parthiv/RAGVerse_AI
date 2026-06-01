@@ -16,6 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 DATA_DIR = BASE_DIR / "data"
 PROCESSED_DATA_DIR = DATA_DIR / "processed"
+RAW_DATA_DIR = DATA_DIR / "raw/documents"
 
 
 # -----------------------------------
@@ -66,3 +67,6 @@ FAISS_PATH = str(
 DATABASE_URL = os.getenv(
     "DATABASE_URL"
 )
+
+
+SUPPORTED_EXTENSIONS = [".pdf"]
