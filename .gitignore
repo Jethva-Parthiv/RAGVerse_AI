@@ -23,3 +23,19 @@ __pycache__/
 
 # OS Files
 .DS_Store
+
+# datasets
+data/raw/
+data/processed/
+
+# vector stores
+storage/
+vectorstore/
+faiss_index/
+
+# embeddings
+*.faiss
+*.pkl
+
+# checkpoints
+checkpoints/

@@ -28,11 +28,15 @@ CHAT_MODEL_NAME = os.getenv(
     "gemini-2.5-flash"
 )
 
-EMBEDDING_MODEL_NAME = os.getenv(
+GEMINI_EMBEDDING_MODEL_NAME = os.getenv(
     "EMBEDDING_MODEL_NAME",
     "gemini-embedding-001"
 )
 
+HUGGINGFACE_EMBEDDING_MODEL_NAME = os.getenv(
+    "EMBEDDING_MODEL_NAME",
+    "BAAI/bge-base-en-v1.5"
+)
 
 # -----------------------------------
 # RAG CONFIG

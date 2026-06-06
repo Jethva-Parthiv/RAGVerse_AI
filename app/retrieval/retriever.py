@@ -1,7 +1,7 @@
 from langchain_community.vectorstores import FAISS
-from app.llm.embeddings import get_gemini_embedding_model
+from app.llm.embeddings import get_gemini_embedding_model,get_huggingface_embedding_model
 from app.core.settings import TOP_K_RESULTS,FAISS_PATH
-embedding_model = get_gemini_embedding_model()
+embedding_model = get_huggingface_embedding_model()
 
 def get_retriever():
     db = FAISS.load_local(

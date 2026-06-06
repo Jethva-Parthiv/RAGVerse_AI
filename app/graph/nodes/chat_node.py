@@ -4,7 +4,7 @@ from langchain_core.prompts import (
 )
 
 from app.graph.state import State
-from app.llm.prompts import BASE_RAG_RULES
+from app.llm.prompts import BASE_RAG_RULES_HOTPOTQA_DATASET
 from app.retrieval.retriever import get_retriever
 from app.llm.models import get_gemini_chat_model
 
@@ -18,7 +18,7 @@ retriever = get_retriever()
 prompt = ChatPromptTemplate.from_messages([
     (
         "system",
-        BASE_RAG_RULES,
+        BASE_RAG_RULES_HOTPOTQA_DATASET,
     ),
 
     MessagesPlaceholder(variable_name="history"),
