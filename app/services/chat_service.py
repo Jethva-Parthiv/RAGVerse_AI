@@ -1,6 +1,6 @@
 from langchain_core.messages import HumanMessage
 from langchain_core.output_parsers import StrOutputParser
-
+from langchain_core.runnables import RunnableLambda
 from app.graph.builder import get_graph
 
 
@@ -20,9 +20,13 @@ def get_chat_response(query: str, thread_id: str) -> str:
         }
     }
 
-    response = graph.invoke(
+    chain = (
+        graph
+        | RunnableLambda(lambda state: state["messages"][-1])
+        | parser
+    )
+
+    return chain.invoke(
         init_state,
         config=config
-    )["messages"][-1]
-
-    return parser.invoke(response)
+    )
