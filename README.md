@@ -1,49 +1,37 @@
 # RAGVerse_AI
 
-Enterprise-oriented conversational RAG framework built using:
+Enterprise-oriented conversational RAG framework built using modular graph-driven architectures.
 
-- LangGraph
-- Gemini
-- FAISS
-- PostgreSQL Memory
-- LangChain
+[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
+[![LangChain](https://img.shields.io/badge/Framework-LangChain%20%2F%20LangGraph-orange)](https://github.com/langchain-ai/langgraph)
+[![Vector Store](https://img.shields.io/badge/VectorStore-FAISS-green)](https://github.com/facebookresearch/faiss)
+[![Database](https://img.shields.io/badge/Database-PostgreSQL-blue)](https://www.postgresql.org/)
+[![Evaluation](https://img.shields.io/badge/Evaluation-RAGAS-red)](https://github.com/explodinggradients/ragas)
 
-RAGVerse_AI is designed as a scalable Retrieval-Augmented Generation (RAG) system that supports:
-
-- conversational memory
-- persistent chat sessions
-- modular graph workflows
-- retrieval pipelines
-- context-aware responses
-- future agentic workflow expansion
-
-The current version includes a CLI-based conversational RAG chatbot implementation.
+RAGVerse_AI is designed as a scalable Retrieval-Augmented Generation (RAG) system supporting persistent chat sessions, modular workflows, and advanced evaluation tracking. The current version features a robust CLI-based conversational chatbot implementation.
 
 ---
 
-# Features
+## 🚀 Features
 
-- Conversational RAG pipeline
-- FAISS vector retrieval
-- PostgreSQL checkpoint-based memory
-- LangGraph workflow orchestration
-- Gemini-powered response generation
-- Modular and scalable architecture
-- Environment-based configuration
-- Persistent multi-session conversations
+- **Conversational RAG Pipeline:** Context-aware responses driven by advanced state graphs.
+- **FAISS Vector Retrieval:** Optimized local vector store indexing for rapid context fetching.
+- **PostgreSQL Checkpoint Memory:** Native LangGraph checkpointers to track multi-session histories persistently.
+- **LangGraph Workflow Orchestration:** Clean separation of graph state nodes, allowing frictionless extension into multi-agent loops.
+- **Production Evaluation Guardrails:** Native chunked evaluation pipeline backed by RAGAS to measure quality drift safely.
 
 ---
 
-# Tech Stack
+## 🛠️ Tech Stack
 
 | Component | Technology |
-|---|---|
-| LLM | Gemini |
-| Framework | LangChain + LangGraph |
-| Vector Store | FAISS |
-| Database | PostgreSQL |
-| Embeddings | Gemini Embeddings |
-| Language | Python |
+| :--- | :--- |
+| **LLM Engine** | Google Gemini (`gemini-3.1-flash-lite`) |
+| **Orchestration** | LangChain + LangGraph |
+| **Vector Store** | FAISS (Facebook AI Similarity Search) |
+| **State Persistence** | PostgreSQL |
+| **Embeddings** | Gemini Native Embeddings |
+| **Evaluation Metrics** | RAGAS (Retrieval Augmented Generation Assessment) |
 
 ---
 
@@ -268,6 +256,47 @@ This project is designed to feel like:
 - a scalable architecture
 - a long-term platform
 - a portfolio-worthy repository
+
+---
+
+# RAG Evaluation (RAGAS) — New Feature
+
+This repo includes an optional evaluation pipeline using **RAGAS**.
+
+## What it evaluates
+It runs the current RAG pipeline (retrieval + Gemini generation) against a HotpotQA **validation** dataset sample and computes:
+- faithfulness
+- answer_relevancy
+- context_precision
+- context_recall
+
+## Files
+- `app/evaluation/ragas_eval.py` — entry point (load QA pairs → run pipeline → score → save results)
+- `app/evaluation/pipeline_runner.py` — generates answers for each question using current retriever + LLM
+- `app/evaluation/ragas_scorer.py` — computes RAGAS metrics (with checkpoint/resume)
+- `app/evaluation/report_generator.py` — writes a human-readable report
+- `app/evaluation/compare_scores.py` — compares multiple runs from `data/eval/baseline_summary.csv`
+
+## Outputs
+Stored under:
+- `data/eval/baseline_results.csv` (per-question)
+- `data/eval/baseline_summary.csv` (append per run)
+- `data/eval/baseline_report.txt` (human report)
+- (intermediate) `data/eval/ragas_eval_progress.csv` (checkpoint)
+
+## Run evaluation
+From repo root:
+
+```bash
+python -m app.evaluation.ragas_eval
+```
+
+## Optional environment variables
+- `EVAL_NUM_PAIRS` (default: `100`) — number of sampled QA pairs
+- `EVAL_SEED` (default: `42`) — sampling seed
+- `EVAL_SLEEP` (default: `2.0`) — delay between questions (helps avoid rate limits)
+
+> If validation data is missing, the loader downloads HotpotQA validation via `app/retrieval/ingest_hotpotqa.py`.
 
 ---
 
