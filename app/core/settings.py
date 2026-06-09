@@ -25,7 +25,7 @@ RAW_DATA_DIR = DATA_DIR / "raw/documents"
 
 CHAT_MODEL_NAME = os.getenv(
     "CHAT_MODEL_NAME",
-    "gemini-2.5-flash"
+    "gemini-3.1-flash-lite"
 )
 
 GEMINI_EMBEDDING_MODEL_NAME = os.getenv(

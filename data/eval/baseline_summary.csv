@@ -1,0 +1,2 @@
+timestamp,num_pairs,faithfulness,answer_relevancy,context_precision,context_recall
+2026-06-08 22:56:26,100,0.8506,0.2988,0.4133,0.51

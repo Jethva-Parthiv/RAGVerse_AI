@@ -1,0 +1,32 @@
+==============================================================
+  RAGVerse Phase 1 — RAGAS Baseline Report
+==============================================================
+  Generated  : 2026-06-08 22:56:26
+  QA pairs   : 100
+
+── Aggregate Scores ────────────────────────────────────────
+  Faithfulness        : 0.8506  (Strong)
+  Answer Relevancy    : 0.2988  (Poor)
+  Context Precision   : 0.4133  (Fair)
+  Context Recall      : 0.5100  (Fair)
+
+── 5 Worst Faithfulness (hallucination risk) ───────────────
+  [0.00] What is the population of the city that Munsonville is in the northwest 
+  [0.00] What Cantonese slang term can mean both "ghost man" and to refer to West
+  [0.00] What 3 countries are part of the legal name of the airline that merged w
+  [0.00] Which plant, the Chaerophyllum or the Cryptanthus, can be found in vario
+  [0.00] The Company They Keep is a book written by Diana Pavlac Glyer, who is a 
+
+── 5 Worst Context Recall (retrieval gaps) ─────────────────
+  [0.00] In what year was the university where Sergei Aleksandrovich Tokarev was 
+  [0.00] Black Book starred the actress and writer of what heritage?
+  [0.00] Which actor does American Beauty and American Beauty have in common?
+  [0.00] Ken Pruitt  was a Republican member of an upper house of the legislature
+  [0.00] Did John Updike and Tom Clancy both publish more than 15 bestselling nov
+
+── Phase 2 Recommendations ─────────────────────────────────
+  Low faithfulness  → re-ranking, reduce TOP_K
+  Low recall        → multi-query, hybrid BM25+dense
+  Low precision     → tune CHUNK_SIZE, add MMR
+  Low relevancy     → improve BASE_RAG_RULES prompt
+==============================================================

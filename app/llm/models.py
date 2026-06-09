@@ -5,5 +5,8 @@ from app.core.settings import CHAT_MODEL_NAME
 load_dotenv()
 
 def get_gemini_chat_model():
-    model = ChatGoogleGenerativeAI(model=CHAT_MODEL_NAME)
+    model = ChatGoogleGenerativeAI(
+        model=CHAT_MODEL_NAME,
+        n=1
+    )
     return model

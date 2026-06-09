@@ -1,0 +1,126 @@
+question,ground_truth,answer,faithfulness,answer_relevancy,context_precision,context_recall
+In what year was the university where Sergei Aleksandrovich Tokarev was a professor founded?,1755,I cannot answer this question from the provided context.,1.0,0.0,0.5,0.0
+Black Book starred the actress and writer of what heritage?,Dutch,"The 2006 Dutch thriller film *Black Book* starred Carice van Houten. Based on the provided context, she is a Dutch actress.
+
+The provided context does not specify the heritage of the other actors (Sebastian Koch, Thom Hoffman, and Halina Reijn) who starred in the film.",0.8333,0.0,0.0,0.0
+Which actor does American Beauty and American Beauty have in common?,Kevin Spacey,"The two films titled ""American Beauty"" mentioned in the context—the 1999 drama directed by Sam Mendes and the 1927 silent film directed by Richard Wallace—do not share any actors. Kevin Spacey stars in the 1999 film, and Billie Dove stars in the 1927 film.",0.8,0.772,0.8667,0.0
+Ken Pruitt  was a Republican member of an upper house of the legislature with how many members ?,40 members,I cannot answer this question from the provided context.,1.0,0.0,0.8333,0.0
+"Between Greyia and Calibanus, which genus contains more species?",Greyia,"The genus Greyia contains more species. 
+
+* **Greyia**: Contains three species.
+* **Calibanus**: Contains two species.",1.0,0.8623,0.0,1.0
+Did John Updike and Tom Clancy both publish more than 15 bestselling novels?,yes,"I cannot answer this question from the provided context. 
+
+The context states that seventeen of Tom Clancy's novels were bestsellers, but it does not provide information regarding whether John Updike published any bestselling novels.",0.6667,0.0,0.0,0.0
+Who was hung for assisting the attempted surrender of a defector from the American Continental Army to the British Army?,John André,John André was hanged for assisting Benedict Arnold’s attempted surrender of the fort at West Point to the British.,1.0,0.7336,1.0,1.0
+which Mexican and American film actress is Ethel Houbiers  French voice of,Salma Hayek Pinault,I cannot answer this question from the provided context.,1.0,0.0,1.0,0.0
+Which major international airport in south-east England ranks as the 8th busiest airport in Europe and replaced Croydon Airport?,Gatwick Airport,I cannot answer this question from the provided context.,1.0,0.0,1.0,0.0
+Isabella Kelly was born at a ruined castle characterized as one of the most isolated fortifications in Britain by who?,The Changing Scottish Landscape,"Isabella Kelly was born at Cairnburgh Castle, which was characterized as ""one of the most isolated fortifications in Britain"" in the 1991 publication ""The Changing Scottish Landscape.""",1.0,0.6787,0.25,1.0
+The facility where Robert Croft worked as a navy instructor was also known as?,"""Home of the Submarine Force""","The facility where Robert Croft worked as a navy instructor, the US Naval Submarine Base New London, is also known as the submarine school.",1.0,0.8185,0.0,0.0
+"Who released the song ""With or Without You"" first, Jai McDowall or U2?",U2,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+"Which ""Roseanne"" star is in Scream 2?",Laurie Metcalf,"Laurie Metcalf, who played Jackie Harris on ""Roseanne"", is in Scream 2.",1.0,0.838,1.0,1.0
+In what city is the company that Fastjet Tanzania was originally founded as a part of prior to rebranding based?,"Nairobi, Kenya",I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+"What is the name of the Australian specialist electronic music magazine that features avant-rock, experimental sound art, and experimental hip hop?",Cyclic Defrost,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+What is the population of the city that Munsonville is in the northwest corner of?,729 at the 2010 census,I cannot answer this question from the provided context.,0.0,0.0,0.0,0.0
+A Pair of Brown Eyes and Wild Mountain Thyme is based from what artists song?,Francis McPeake,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+Armageddon in Retrospect was written by the author who was best known for what 1969 satire novel?,Slaughterhouse-Five,I cannot answer this question from the provided context.,1.0,0.0,1.0,1.0
+What class of instrument does Apatim Majumdar play?,strings,I cannot answer this question from the provided context.,0.5,0.0,0.0,0.0
+"Which movie did Disney produce first,  The Many Adventures of Winnie the Pooh or Ride a Wild Pony?",Ride a Wild Pony,"Ride a Wild Pony was produced first, in 1975. The Many Adventures of Winnie the Pooh was produced in 1977.",1.0,0.8798,0.0,1.0
+Pandikona and Berger Blanc Suisse are both what kinds of animals?,dogs,Both the Pandikona and the Berger Blanc Suisse are dogs.,1.0,0.9342,0.0,1.0
+The Prussian General Carl von Clausewitz is associated with what type of realism?,Modern thinkers associated with classical realism are Carl von Clausewitz,Carl von Clausewitz is associated with Classical Realism.,1.0,0.7777,0.5,1.0
+What where both Hawker Hurricane and No. 1455 Flight apart of?,Royal Air Force,I cannot answer this question from the provided context.,1.0,0.0,0.5833,1.0
+what language did the ethnic group which Torstein Ellingsen was its drumer  speaks,Norwegian language,I cannot answer this question from the provided context.,1.0,0.0,0.25,0.0
+"From March 631 to April 631, Farrukhzad Khosrau V was the king of an empire that succeeded which empire?",the Parthian Empire,"I cannot answer this question from the provided context. The context does not contain information regarding a ruler named ""Farrukhzad Khosrau V"" or his reign from March to April 631.",1.0,0.0,0.0,0.0
+"Beer Wars covers the differences between large corporate breweries, and small breweries, such as what brewery that is headquartered in Escondido, california?",Stone Brewing,"Beer Wars covers the differences between large corporate breweries and small breweries, such as Stone Brewing Co., which is headquartered in Escondido, California.",1.0,0.7636,1.0,1.0
+"Which head coach has led their team for a longer period of time, Tim Cluess or Steve Prohm?",Tim Cluess,"I cannot answer this question from the provided context. 
+
+The context provides the date Timothy Michael Cluess began his position at Iona College (April 8, 2010), but it does not state when his tenure ended or provide a duration of service. While it notes that Steve Prohm was in his 1st season during 2015–16 and his 3rd season during 2017–18, there is insufficient information to compare the total lengths of their coaching tenures.",0.8571,0.0,0.0,1.0
+During what war were the Russia-United Kingdom relations in a state of rivalry after the abdication of Emperor Nicholas II?,the Cold War (1947–91),I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+How far from Sacramento is the flight school in Atwater?,about 115 miles (185 km),I cannot answer this question from the provided context.,1.0,0.0,0.5,0.0
+Baraki Barak District is situated in the western part of a province whose capital is what?,Puli Alam,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+What was the 2010 population of the town where Black Crescent Mountain was located?,310,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+"In the NASA mission where Moon trees were taken into space, what was the nickname of the Command Module?","""Kitty Hawk""",I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+Which comic series involves characters such as Nick Fury and Baron von Strucker?,Marvel,I cannot answer this question from the provided context.,1.0,0.0,0.8333,1.0
+College Humor is a 1933 American pre-Code musical comedy film that starred what American singer and actor who has a trademark warm bass-baritone voice?,"Harry Lillis ""Bing"" Crosby Jr.","College Humor starred Bing Crosby, an American singer and actor who had a trademark warm bass-baritone voice.",1.0,0.6587,0.7,1.0
+Who is writing a book about the Koch family who control the second-largest privately owned company in the United States?,Jane Mayer,"Two authors mentioned in the provided context have written books about the Koch family:
+
+*   **Jane Mayer**, who wrote the 2016 non-fiction book *Dark Money: The Hidden History of the Billionaires Behind the Rise of the Radical Right*.
+*   **Daniel Schulman**, who wrote the 2014 non-fiction book *Sons of Wichita: How the Koch Brothers became America's most powerful and private dynasty*.",1.0,0.7486,0.3333,1.0
+New York State Route 9R rejoins its parent in a hamlet located  in what New York County?,Albany,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+12 Years a Slave starred what British actor born 10 July 1977),Chiwetel Ejiofor,Chiwetel Ejiofor (born 10 July 1977) starred in *12 Years a Slave*.,1.0,0.7422,0.75,1.0
+What was the capital of India when the Taj Mahal was commissioned?,Agra,I cannot answer this question from the provided context.,1.0,0.0,0.2,1.0
+"In what city did the ""Prince of tenors"" star in a film based on an opera by Giacomo Puccini?",Rome,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+What river can a  large African bovine be seen bathing in in the Mwabvi Wildlife Reserve?,Buffalo,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+Jalen Jones plays basketball for an NBA team that plays their home games in what arena?,Smoothie King Center,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+The On Tour Forever album gave Blues Traveler the opportunity to display what musical trademark?,extensive use of segues,I cannot answer this question from the provided context.,1.0,0.0,1.0,1.0
+Which Victorian poet was born in a 15th-century castle home to the Earl of Southesk?,Charlotte Carnegie,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+Alexander Petrovich Nikolayev received the title Hero of the Soviet Union and the Order of Lenin for his actions during the   the final major offensive of the European theatre of what war?,World War II,I cannot answer this question from the provided context.,1.0,0.0,1.0,1.0
+Where did Cale Gundy's brother play football in college?,Oklahoma State University,I cannot answer this question from the provided context.,0.5,0.0,1.0,0.0
+"Who has released more solo albums, Nick Carter or Brady Seals?",Brady Seals,"Based on the provided context:
+
+*   **Nick Carter** has released three solo albums: ""Now or Never"", ""I'm Taking Off"", and ""All American"".
+*   **Brady Seals** has released four solo albums: three recorded between 1994 and 2002, and ""Play Time"" in 2009.
+
+Therefore, Brady Seals has released more solo albums.",1.0,0.9233,0.0,1.0
+"Which Istanbul mosque is unique for retaining a Baroque style of architecture, the Bayezid II Mosque or the Nusretiye Mosque?",Nusretiye Mosque,The Nusretiye Mosque is the Istanbul mosque that is unique for retaining a Baroque style of architecture.,1.0,0.703,1.0,1.0
+"What university did the last Detroit Pistons player to wear the number retired in honor of a player nicknamed ""The Worm"" attend?",Georgetown University,Gregory Keith Monroe Jr. attended Georgetown University.,1.0,0.6174,0.3333,1.0
+The Atik Valide Mosque and Valens Aqueduct are found in what country?,Turkey,Both the Atik Valide Mosque and the Valens Aqueduct are found in Turkey.,1.0,0.9049,1.0,1.0
+"Which of the four US Presidents who have been assinated was shot on the grounds of the Pan-American Exposition at the Temple of Music in Buffalo, New York?",William McKinley,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+Who created the NBC sitcom that Johnny Pemberton appears in as the character Bo Thompson?,Justin Spitzer,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+Were Halldór Laxness and Timothy Leary from the same country?,no,"No. Timothy Leary was an American, and Halldór Laxness was Icelandic.",1.0,0.9405,0.0,1.0
+Do both Korematsu v. United States and Chaplinsky v. New Hampshire cases regard the rights of U. S. citizens?,yes,"Based on the provided context:
+
+* **Korematsu v. United States** concerned the internment of Japanese Americans, which included U.S. citizens.
+* **Chaplinsky v. New Hampshire** articulated the fighting words doctrine as a limitation on First Amendment freedom of speech; the provided text does not specify whether the case regarded the rights of U.S. citizens.
+
+Therefore, the provided context does not contain sufficient information to confirm if both cases regard the rights of U.S. citizens.",1.0,0.0,0.0,0.0
+What is the title of the memoir written by the honoree of the Black and White Ball?,Personal History,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+What country is the theme park served by the Huis Ten Bosch train service themed on?,Netherlands,I cannot answer this question from the provided context.,1.0,0.0,1.0,1.0
+The Distribution of Industry act was passed by a man who was prime minister when?,1945 to 1951,I cannot answer this question from the provided context.,1.0,0.0,0.3333,1.0
+"What Cantonese slang term can mean both ""ghost man"" and to refer to Westerners?",Gweilo,I cannot answer this question from the provided context.,0.0,0.0,1.0,1.0
+In what year was the most famous statute at Po Lin Monastery built?,Tian Tan Buddha,"The most famous statue at Po Lin Monastery, the Tian Tan Buddha, was completed in 1993.",0.5,0.7876,0.0,1.0
+"The Nike Hoop Summit has had many current NBA players as former participants, including what German player from the Dallas Mavericks?",Dirk Werner Nowitzki,Dirk Nowitzki is a German player from the Dallas Mavericks who participated in the Nike Hoop Summit.,1.0,0.8777,0.5,1.0
+Which actor from the South Korean-Thai drama film Final Recipe debuted as a member of Super Junior-M in 2008?,Henry Lau,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+Are Phlebodium and Pieris both species of ferns?,no,"No. According to the provided context:
+
+*   **Phlebodium** is a genus of ferns.
+*   **Pieris** refers to two different things: a genus of shrubs in the family Ericaceae and a genus of butterflies in the family Pieridae. Neither is a fern.",1.0,0.9155,0.5833,1.0
+Who was the great grandfather of Franklin Seaver Pratt's wife?,Kalokuokamaile,"I cannot answer this question from the provided context. The context states that Elizabeth Kekaʻaniau Laʻanui Pratt was a great granddaughter of Kalokuokamaile, but it does not specify the name of her great grandfather.",0.3333,0.0,0.5,1.0
+At what age did Cieli di Toscana's singer become blind?,Bocelli became completely blind at the age of 12,I cannot answer this question from the provided context.,1.0,0.0,1.0,1.0
+Which late 1980s and 1990s English super model was featured in the song nasty girl by The Notorious B.I.G.?,Naomi Elaine Campbell,I cannot answer this question from the provided context.,1.0,0.0,1.0,1.0
+What is the name of the film directed by Alex Cox  adapted from a 1606 play starring Diana Quick as the Dutchess?,Revengers Tragedy,The name of the film is *Revengers Tragedy*.,1.0,0.6059,1.0,1.0
+Josh Trank and Mike Valerio both work in what industry?,entertainment,Josh Trank and Mike Valerio both work in the entertainment industry.,1.0,0.9009,0.5,1.0
+"Which American comedian born on March 21, 1962, appeared in the movie ""Sleepless in Seattle?""",Rosie O'Donnell,I cannot answer this question from the provided context.,1.0,0.0,0.5,0.0
+Any Questions for Ben? was directed by which Australian producer and actor?,"Robert Ian ""Rob"" Sitch","*Any Questions for Ben?* was directed by Rob Sitch, who is an Australian film director, screenwriter, and producer. The provided context does not state that he is an actor.",0.4,0.639,1.0,0.0
+What American indie rock group first had Jesse Sandoval as the drummer and now has Jon Sortland on drums?,The Shins,The American indie rock group that first had Jesse Sandoval as the drummer and now has Jon Sortland on drums is The Shins.,0.6667,0.8847,0.3333,1.0
+What 3 countries are part of the legal name of the airline that merged with Braathens in 2004?,Denmark–Norway–Sweden,I cannot answer this question from the provided context.,0.0,0.0,0.0,0.0
+What is the ratio of flow velocity past a boundary to the local speed of sound for a Saab JAS 39 Gripen?,2,The ratio of flow velocity past a boundary to the local speed of sound for a Saab JAS 39 Gripen is Mach 2.,1.0,0.7913,0.5,1.0
+"SWX Right Now airs on the station that broadcasts on what channel in Billings, Montana?",8,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+"Which player, who also played for the New Jersey Nets and the Golden State Warriors, finished third in the league with 231 three-point field goals during the 1995-96 Atlanta Hawks season?",Mookie Blaylock,"Mookie Blaylock finished third in the league with 231 three-point field goals during the 1995–96 season. He played for the New Jersey Nets, Atlanta Hawks, and Golden State Warriors during his career.",1.0,0.7175,0.5833,1.0
+Saltillo Engine is an engine plant in Ramos Arizpe that belongs to the American subsidiary of what company?,Fiat Chrysler Automobiles N.V.,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+"What type of television show did Dylan Everett star in, in 2015?",American-Canadian mystery-drama,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+"Which plant, the Chaerophyllum or the Cryptanthus, can be found in various places across the world?",Chaerophyllum,I cannot answer this question from the provided context.,0.0,0.0,0.0,0.0
+"Johnny Mathis: Wonderful Wonderful aired at what luxury hotel, casino and spa resort located in Atlantic City, New Jersey?",Tropicana Casino & Resort,"Johnny Mathis: Wonderful, Wonderful! aired at the Tropicana Casino & Resort Atlantic City.",0.5,0.7098,0.3667,1.0
+Who wrote the lyrics for Linda Eder's Broadway debut?,"Wildhorn, Bricusse and Cuden",I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+"The Company They Keep is a book written by Diana Pavlac Glyer, who is a professor at a university in Azusa, California, that was founded in 1899, and is under the auspices of what religion?",evangelical Christian,I cannot answer this question from the provided context.,0.0,0.0,0.0,0.0
+For One Night Only was hosted by the man most well-known for hosting what show from 1962 until 1999?,The Late Late Show,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+What was the slogan  that came about from the idea of Lebensraum which had its most extreme form supported by the Nazi Party until the end of World War II?,Blood and soil,I cannot answer this question from the provided context.,0.0,0.0,0.0,0.0
+Olivia DeJonge starred in an American horror film directed by Shyamalan called what,The Visit,Olivia DeJonge starred in the 2015 American horror film titled *The Visit*.,1.0,0.7155,1.0,1.0
+Who conducted the negotiations  with the owners and the longest serving commandant of Auschwitz concentration and extermination camp?,Rudolf Höss,"I cannot answer this question from the provided context. The context identifies Rudolf Höss as the longest-serving commandant of Auschwitz, but it does not mention who conducted negotiations with the owners of any facilities.",0.6667,0.0,1.0,1.0
+What genre is the novel from which the fast-food restaurant specializing in seafood derives its name?,an adventure novel,"The novel from which Long John Silver's derives its name is ""Treasure Island,"" which is a novel. The provided context does not specify a genre for ""Treasure Island.""",1.0,0.0,1.0,0.0
+What kind of musicians are Mark Gaudet and Jan Axel Blomberg?,drummer,I cannot answer this question from the provided context.,0.3333,0.0,0.0,0.0
+A Wind in the Door is part of a series written by who?,Madeleine L'Engle,A Wind in the Door is part of a series written by Madeleine L'Engle.,0.5,0.8571,1.0,1.0
+The Airport located next to the A13 handled how many passengers in 2016 ?,1.6 million passengers,I cannot answer this question from the provided context.,1.0,0.0,0.2,1.0
+"The town of Sinclair, West Virginia, is named after the founder of the local oil drilling company. What is on Sinclair Oil's famous logo?",dinosaur,The Sinclair Oil Corporation's logo features the silhouette of a large green dinosaur.,1.0,0.8073,0.5,1.0
+Jihad: A Story of the Others is a documentary by the director who is of what descent?,Punjabi/Pashtun,"JIHAD: a story of the others is a documentary by the director Deeyah Khan, who is Norwegian.",1.0,0.7698,0.0,0.0
+Minor league baseball games that were played between the rivalling teams of the Sooners and the Cowboys were played at the stadium formerly known as what?,Drillers Stadium,I cannot answer this question from the provided context.,0.0,0.0,1.0,1.0
+Cooperative Living Organization is located in a city that is the county seat of what county in Florida?,Alachua,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+"What is the pen name of author Carolyn Janice Cherry, who wrote the Fortress Series?","Carolyn Janice Cherry (born September 1, 1942), better known by the pen name C. J. Cherryh,",The pen name of Carolyn Janice Cherry is C. J. Cherryh.,1.0,0.7957,1.0,1.0
+"Which dog is believed to dispel ghosts and evil spirits, Segugio Italiano or Sapsali?",Sapsali,The Sapsali is the dog believed to dispel ghosts and evil spirits.,1.0,0.7002,1.0,1.0
+"Which French aristocrat and military officer who fought in the American Revolutionary War visited this historic home located at Enfield, Halifax County, North Carolina, known as The Cellar?",Marquis de Lafayette,The French aristocrat and military officer who visited The Cellar is the Marquis de Lafayette.,1.0,0.8,1.0,1.0
+What sports team included both of the brothers Case McCoy and Colt McCoy during different years?,University of Texas Longhorns,I cannot answer this question from the provided context.,0.0,0.0,1.0,1.0
+Which member of The New Russian School was both a doctor and a chemist besides being a composer?,Alexander Porfiryevich Borodin,I cannot answer this question from the provided context.,0.0,0.0,0.0,0.0
+"Susanna Thompson appeared in the courtroom drama film Ghosts of Mississippi, directed by who?",Rob Reiner,"Susanna Thompson appeared in *Ghosts of Mississippi*, which was directed by Rob Reiner.",1.0,0.7119,1.0,1.0
+Live Wire Radio will possibly be considered as a replacement for a variety show created in what year?,1974,I cannot answer this question from the provided context.,1.0,0.0,0.0,0.0
+Luke Rockhold defeated the MMA fighter who was the first to earn a win against which champion in the UFC?,Anderson Silva,"Luke Rockhold defeated Chris Weidman, who was the first man to defeat Anderson Silva inside the UFC.",1.0,0.7173,0.5,1.0
+What type of art does The Consul and Arlecchino have in common?,music,Both *The Consul* and *Arlecchino* are operas.,1.0,0.883,1.0,1.0
