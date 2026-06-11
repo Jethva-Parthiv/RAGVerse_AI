@@ -1,69 +1,47 @@
-from langchain_core.prompts import (
-    ChatPromptTemplate,
-    MessagesPlaceholder,
-)
+from langchain_core.messages import AIMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 from app.graph.state import State
-from app.llm.prompts import BASE_RAG_RULES_HOTPOTQA_DATASET
-from app.retrieval.retriever import get_retriever
 from app.llm.models import get_gemini_chat_model
+from app.llm.prompts import BASE_RAG_RULES_HOTPOTQA_DATASET
+
+from app.retrieval.advanced_retriever import get_advanced_retriever
+
+_retriever = None
+_llm       = None
+_chain     = None
 
 
-# Initialize once
-chat_model = get_gemini_chat_model()
-retriever = get_retriever()
+def _get_chain():
+    global _retriever, _llm, _chain
+    if _chain is None:
+        _retriever = get_advanced_retriever()
+        _llm       = get_gemini_chat_model()
 
-
-# Create prompt once (better performance)
-prompt = ChatPromptTemplate.from_messages([
-    (
-        "system",
-        BASE_RAG_RULES_HOTPOTQA_DATASET,
-    ),
-
-    MessagesPlaceholder(variable_name="history"),
-
-    (
-        "human",
-        """
-        Context:
-        {context}
-
-        Question:
-        {query}
-        """
-    ),
-])
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", BASE_RAG_RULES_HOTPOTQA_DATASET),
+            MessagesPlaceholder(variable_name="history"),
+            ("human", "Context:\n{context}\n\nQuestion: {query}"),
+        ])
+        _chain = prompt | _llm
+    return _retriever, _chain
 
 
 def chat_node(state: State) -> dict:
-    """
-    Retrieve context and generate AI response.
-    """
+    query    = state["query"]
+    history  = state["messages"][:-1]   # all but the current human message
 
-    query = state["query"]
-    history = state.get("messages", [])
+    retriever, chain = _get_chain()
 
-    # Retrieve documents
-    documents = retriever.invoke(query)
+    # Advanced retrieval (multi-query + hybrid + re-rank)
+    docs    = retriever.retrieve(query)
+    context = "\n\n".join(doc.page_content for doc in docs)
 
-    # Build clean context
-    context = "\n\n".join(
-        doc.page_content.strip()
-        for doc in documents
-        if doc.page_content
-    )
-
-    # Create chain
-    chain = prompt | chat_model
-
-    # Generate response
+    # Generate
     response = chain.invoke({
         "history": history,
         "context": context,
-        "query": query,
+        "query":   query,
     })
 
-    return {
-        "messages": [response]
-    }
+    return {"messages": [AIMessage(content=response.content)]}
