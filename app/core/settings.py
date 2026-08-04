@@ -17,6 +17,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = BASE_DIR / "data"
 PROCESSED_DATA_DIR = DATA_DIR / "processed"
 RAW_DATA_DIR = DATA_DIR / "raw/documents"
+EVAL_DATA_DIR = DATA_DIR / "eval"
+LOG_DIR = BASE_DIR / "logs"
+
+# Ensure directories exist
+for path in [DATA_DIR, PROCESSED_DATA_DIR, RAW_DATA_DIR, EVAL_DATA_DIR, LOG_DIR]:
+    path.mkdir(parents=True, exist_ok=True)
 
 
 # -----------------------------------
@@ -29,12 +35,12 @@ CHAT_MODEL_NAME = os.getenv(
 )
 
 GEMINI_EMBEDDING_MODEL_NAME = os.getenv(
-    "EMBEDDING_MODEL_NAME",
+    "GEMINI_EMBEDDING_MODEL_NAME",
     "gemini-embedding-001"
 )
 
 HUGGINGFACE_EMBEDDING_MODEL_NAME = os.getenv(
-    "EMBEDDING_MODEL_NAME",
+    "HUGGINGFACE_EMBEDDING_MODEL_NAME",
     "BAAI/bge-base-en-v1.5"
 )
 
@@ -54,14 +60,20 @@ CHUNK_OVERLAP = int(
     os.getenv("CHUNK_OVERLAP", 200)
 )
 
+SUPPORTED_EXTENSIONS = [".pdf", ".md", ".docx", ".html", ".txt"]
+
 
 # -----------------------------------
-# VECTOR DATABASE
+# VECTOR DATABASE (FAISS / QDRANT)
 # -----------------------------------
 
 FAISS_PATH = str(
     PROCESSED_DATA_DIR / "faiss_index"
 )
+
+QDRANT_HOST = os.getenv("QDRANT_HOST", "localhost")
+QDRANT_PORT = int(os.getenv("QDRANT_PORT", 6333))
+QDRANT_COLLECTION_NAME = os.getenv("QDRANT_COLLECTION_NAME", "langchain_docs")
 
 
 # -----------------------------------
@@ -70,7 +82,4 @@ FAISS_PATH = str(
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL"
-)
-
-
-SUPPORTED_EXTENSIONS = [".pdf"]
+)

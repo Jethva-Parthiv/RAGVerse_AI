@@ -1,22 +1,39 @@
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from functools import lru_cache
 from dotenv import load_dotenv
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_huggingface import HuggingFaceEmbeddings
-from app.core.settings import GEMINI_EMBEDDING_MODEL_NAME,HUGGINGFACE_EMBEDDING_MODEL_NAME
+
+from app.core.settings import (
+    GEMINI_EMBEDDING_MODEL_NAME,
+    HUGGINGFACE_EMBEDDING_MODEL_NAME
+)
+from app.core.logging import logger
+
 load_dotenv()
 
-def get_gemini_embedding_model():
-    embedding_model = GoogleGenerativeAIEmbeddings(
+
+@lru_cache(maxsize=1)
+def get_gemini_embedding_model() -> GoogleGenerativeAIEmbeddings:
+    """
+    Returns Google Gemini native embedding model instance.
+    """
+    logger.info(f"Initializing Gemini Embeddings model: {GEMINI_EMBEDDING_MODEL_NAME}")
+    return GoogleGenerativeAIEmbeddings(
         model=GEMINI_EMBEDDING_MODEL_NAME
     )
-    return embedding_model
 
 
-def get_huggingface_embedding_model():
+@lru_cache(maxsize=1)
+def get_huggingface_embedding_model() -> HuggingFaceEmbeddings:
+    """
+    Returns HuggingFace embedding model instance (default: BAAI/bge-base-en-v1.5).
+    """
+    logger.info(f"Initializing HuggingFace Embeddings model: {HUGGINGFACE_EMBEDDING_MODEL_NAME}")
     return HuggingFaceEmbeddings(
         model_name=HUGGINGFACE_EMBEDDING_MODEL_NAME,
-        model_kwargs={"device": "cpu"},   # change to "cuda" if you have GPU
+        model_kwargs={"device": "cpu"},
         encode_kwargs={
-            "normalize_embeddings": True,  # BGE requires this for cosine similarity
-            "batch_size": 256,             # no rate limit — use large batches
+            "normalize_embeddings": True,
+            "batch_size": 64,
         },
     )
