@@ -1,11 +1,15 @@
-import shutil
 import os
+import shutil
 import uuid
 from pathlib import Path
 
 from dotenv import load_dotenv
-
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import (
+    PyPDFLoader,
+    TextLoader,
+    UnstructuredMarkdownLoader,
+    UnstructuredHTMLLoader
+)
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 
@@ -13,261 +17,141 @@ from app.core.settings import (
     CHUNK_SIZE,
     CHUNK_OVERLAP,
     FAISS_PATH,
-    RAW_DATA_DIR
+    RAW_DATA_DIR,
+    SUPPORTED_EXTENSIONS
 )
-
-from app.llm.embeddings import (
-    get_gemini_embedding_model
-)
-
+from app.core.logging import logger
+from app.llm.embeddings import get_huggingface_embedding_model
 
 load_dotenv()
 
-os.environ["LANGCHAIN_TRACING_V2"] = "false"
 
-
-# ==========================================
-# LOAD PDF FILES
-# ==========================================
-
-def get_pdf_files():
+def get_all_raw_files() -> list[Path]:
     """
-    Get all PDF files from data directory.
+    Scans RAW_DATA_DIR recursively for all supported file formats.
     """
-
     data_path = Path(RAW_DATA_DIR)
-
     if not data_path.exists():
-        raise FileNotFoundError(
-            f"Data folder not found: {RAW_DATA_DIR}"
-        )
+        logger.warning(f"Data folder not found: {RAW_DATA_DIR}. Creating directory.")
+        data_path.mkdir(parents=True, exist_ok=True)
+        return []
 
-    pdf_files = list(data_path.glob("*.pdf"))
+    files = []
+    for ext in SUPPORTED_EXTENSIONS:
+        files.extend(list(data_path.rglob(f"*{ext}")))
 
-    if not pdf_files:
-        raise ValueError(
-            "No PDF files found in data folder."
-        )
-
-    return pdf_files
+    return files
 
 
-# ==========================================
-# LOAD DOCUMENTS
-# ==========================================
-
-def load_pdf(file_path: str):
+def load_single_document(file_path: Path) -> list:
     """
-    Load PDF documents.
+    Loads a single document based on its file extension.
     """
+    ext = file_path.suffix.lower()
+    try:
+        if ext == ".pdf":
+            loader = PyPDFLoader(str(file_path))
+        elif ext in [".md", ".txt"]:
+            loader = TextLoader(str(file_path), encoding="utf-8")
+        elif ext == ".html":
+            loader = UnstructuredHTMLLoader(str(file_path))
+        else:
+            logger.warning(f"Unsupported extension '{ext}' for file {file_path.name}. Skipping.")
+            return []
 
-    loader = PyPDFLoader(file_path)
+        return loader.load()
+    except Exception as e:
+        logger.error(f"Error loading document {file_path.name}: {e}")
+        return []
 
-    return loader.load()
 
-
-def load_all_documents():
+def load_all_documents() -> list:
     """
-    Load all PDF documents.
+    Loads all raw documents from RAW_DATA_DIR and attaches metadata.
     """
-
     all_documents = []
+    raw_files = get_all_raw_files()
 
-    pdf_files = get_pdf_files()
+    if not raw_files:
+        logger.info(f"No raw files found in {RAW_DATA_DIR}. Please add technical docs.")
+        return []
 
-    for pdf_file in pdf_files:
+    logger.info(f"Found {len(raw_files)} documents to process.")
 
-        print(f"\nLoading: {pdf_file.name}")
+    for file_path in raw_files:
+        logger.info(f"Loading document: {file_path.name}")
+        docs = load_single_document(file_path)
+        doc_id = str(uuid.uuid4())
 
-        documents = load_pdf(str(pdf_file))
-
-        # ==========================================
-        # ADD DOCUMENT METADATA
-        # ==========================================
-
-        document_id = str(uuid.uuid4())
-
-        for page_number, doc in enumerate(documents, start=1):
-
+        for idx, doc in enumerate(docs, start=1):
             doc.metadata.update({
-                "source_file": pdf_file.name,
-                "document_id": document_id,
-                "page_number": page_number
+                "source_file": file_path.name,
+                "file_path": str(file_path),
+                "file_type": file_path.suffix.lower(),
+                "document_id": doc_id,
+                "page_number": doc.metadata.get("page", idx)
             })
 
-            # doc.metadata.update({
-            #     "source": pdf_file.name,
-            #     "document_id": document_id,
-            #     "page": page_number
-            # })
-
-        all_documents.extend(documents)
-
-        print(f"Loaded {len(documents)} pages")
+        all_documents.extend(docs)
+        logger.info(f"Loaded {len(docs)} pages/sections from {file_path.name}")
 
     return all_documents
 
 
-# ==========================================
-# SPLIT DOCUMENTS
-# ==========================================
-
-def split_documents(documents):
+def split_documents(documents: list) -> list:
     """
-    Split documents into chunks.
+    Splits documents into recursive character text chunks.
     """
+    if not documents:
+        return []
 
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=CHUNK_SIZE,
-        chunk_overlap=CHUNK_OVERLAP
+        chunk_overlap=CHUNK_OVERLAP,
+        separators=["\n\n", "\n", "```", ". ", " ", ""]
     )
 
     chunks = splitter.split_documents(documents)
 
-    # ==========================================
-    # ADD CHUNK METADATA
-    # ==========================================
-
     for index, chunk in enumerate(chunks):
-
         chunk.metadata["chunk_id"] = index
 
+    logger.info(f"Split {len(documents)} document pages into {len(chunks)} text chunks.")
     return chunks
 
 
-# ==========================================
-# CREATE EMBEDDINGS
-# ==========================================
-
-def create_embeddings(chunks, embedding_model):
+def build_and_save_faiss_index(chunks: list) -> None:
     """
-    Create embeddings for all chunks.
+    Creates and saves a FAISS vector store using HuggingFace embeddings.
     """
+    if not chunks:
+        logger.warning("No chunks available to build FAISS index.")
+        return
 
-    texts = [
-        chunk.page_content
-        for chunk in chunks
-    ]
-
-    print("\nCreating embeddings...")
-
-    embeddings = []
-
-    for index, text in enumerate(texts, start=1):
-
-        vector = embedding_model.embed_query(text)
-
-        embeddings.append(vector)
-
-        print(f"Embedded chunk {index}/{len(texts)}")
-
-    if len(texts) != len(embeddings):
-        raise ValueError(
-            "Mismatch between texts and embeddings."
-        )
-
-    return texts, embeddings
-
-
-
-
-def create_or_update_vector_store(chunks):
-    """
-    Always create a fresh FAISS index.
-    Deletes old index if it exists.
-    """
-
-    embedding_model = get_gemini_embedding_model()
-
-    texts, embeddings = create_embeddings(
-        chunks,
-        embedding_model
-    )
-
-    # ==========================================
-    # DELETE OLD FAISS INDEX
-    # ==========================================
+    embedding_model = get_huggingface_embedding_model()
 
     if os.path.exists(FAISS_PATH):
-
-        print("\nDeleting existing FAISS index...")
-
+        logger.info("Clearing previous FAISS index...")
         shutil.rmtree(FAISS_PATH)
 
-    # ==========================================
-    # CREATE NEW VECTOR STORE
-    # ==========================================
+    logger.info("Building new FAISS vector index...")
+    db = FAISS.from_documents(chunks, embedding_model)
 
-    print("\nCreating new FAISS index...")
-
-    db = FAISS.from_embeddings(
-        text_embeddings=list(zip(texts, embeddings)),
-        embedding=embedding_model,
-        metadatas=[
-            chunk.metadata
-            for chunk in chunks
-        ]
-    )
-
-    return db
-
-
-# ==========================================
-# SAVE VECTOR STORE
-# ==========================================
-
-def save_vector_store(db):
-    """
-    Save FAISS index locally.
-    """
-
-    Path(FAISS_PATH).mkdir(
-        parents=True,
-        exist_ok=True
-    )
-
+    Path(FAISS_PATH).mkdir(parents=True, exist_ok=True)
     db.save_local(FAISS_PATH)
+    logger.info(f"FAISS index successfully saved to: {FAISS_PATH}")
 
 
-# ==========================================
-# INGESTION PIPELINE
-# ==========================================
-
-def ingest():
+def ingest() -> None:
     """
-    Complete ingestion pipeline.
+    Main ingestion pipeline execution function.
     """
-
-    print("\nLoading PDF documents...")
-
+    logger.info("Starting Document Ingestion Pipeline ...")
     documents = load_all_documents()
-
-    print(f"\nTotal pages loaded: {len(documents)}")
-
-    print("\nSplitting documents...")
-
     chunks = split_documents(documents)
-
-    print(f"Created {len(chunks)} chunks")
-
-    # ==========================================
-    # VECTOR STORE
-    # ==========================================
-
-    db = create_or_update_vector_store(chunks)
-
-    # ==========================================
-    # SAVE VECTOR STORE
-    # ==========================================
-
-    print("\nSaving vector database...")
-
-    save_vector_store(db)
-
-    print("\nFAISS index updated successfully.")
-    print(f"Saved at: {FAISS_PATH}")
+    build_and_save_faiss_index(chunks)
+    logger.info("Document Ingestion Pipeline completed successfully.")
 
 
 if __name__ == "__main__":
-
     ingest()
