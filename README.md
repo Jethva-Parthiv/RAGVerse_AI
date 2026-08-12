@@ -47,10 +47,14 @@ LANGCHAIN_PROJECT=RAGVerse_AI
 
 ## 📂 Data Ingestion
 
-Place your raw documentation files (`.md`, `.pdf`, `.html`, `.docx`) inside `data/raw/documents/`, then run:
+Place your raw documentation files (`.md`, `.pdf`, `.html`, `.docx`, `.py`, `.js`, `.json`, etc.) inside `data/raw/documents/`, then run the modular ingestion CLI:
 
 ```bash
-python -m app.retrieval.ingest
+# Auto-detect file types & chunking strategies
+python -m app.ingestion.ingest
+
+# Or specify custom strategy & single file override:
+python -m app.ingestion.ingest --file-path data/raw/documents/guide.md --strategy markdown
 ```
 
 ---

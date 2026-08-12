@@ -60,7 +60,10 @@ CHUNK_OVERLAP = int(
     os.getenv("CHUNK_OVERLAP", 200)
 )
 
-SUPPORTED_EXTENSIONS = [".pdf", ".md", ".docx", ".html", ".txt"]
+SUPPORTED_EXTENSIONS = [
+    ".pdf", ".md", ".markdown", ".docx", ".html", ".htm", ".txt",
+    ".py", ".js", ".ts", ".json", ".csv", ".yaml", ".yml"
+]
 
 
 # -----------------------------------

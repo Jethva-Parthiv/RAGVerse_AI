@@ -112,11 +112,16 @@ Key directories and responsibilities:
 - **`llm/embeddings.py`**: Gemini embedding model + HuggingFace embedding model.
 - **`llm/prompts.py`**: RAG grounding rules/templates.
 
+#### `app/ingestion/`
+- **`ingestion/loaders/`**: Abstract `BaseLoaderAdapter` and concrete adapters (`PDF`, `Markdown`, `HTML`, `Text`, `Docx`, `Code`, `StructuredData`) with registry-based `LoaderFactory`.
+- **`ingestion/chunking/`**: Abstract `BaseChunkerStrategy` and concrete strategies (`Recursive`, `MarkdownHeader`, `CodeLanguage`, `Token`, `Character`) with registry-based `ChunkerFactory`.
+- **`ingestion/processor.py`**: Batch processing engine with metadata enrichment (SHA-256 hash, timestamps, chunk IDs, strategy tags), error handling, and FAISS indexing.
+- **`ingestion/ingest.py`**: CLI entry point (`python -m app.ingestion.ingest`).
+
 #### `app/retrieval/`
-- **`retrieval/ingest_hotpotqa.py`**: downloads HotpotQA validation/train, extracts wiki paragraphs, chunks, embeds, and builds/saves FAISS.
-- **`retrieval/retriever.py`**: a simple FAISS retriever loader (not used directly by the chat node, which uses advanced retriever).
+- **`retrieval/retriever.py`**: a simple FAISS retriever loader.
 - **`retrieval/advanced_retriever.py`**: multi-query + hybrid BM25+dense + cross-encoder re-ranking.
-- **`retrieval/vectorstore.py`**: not inspected in provided context.
+- **`retrieval/vectorstore.py`**: vectorstore utilities.
 
 #### `app/services/`
 - **`services/chat_service.py`**: wraps the LangGraph invocation; converts state into a final string via `StrOutputParser`.

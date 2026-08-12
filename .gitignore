@@ -39,3 +39,6 @@ faiss_index/
 
 # checkpoints
 checkpoints/
+
+# logs
+logs/
