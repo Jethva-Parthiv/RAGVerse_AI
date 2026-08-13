@@ -13,12 +13,11 @@ from ragas.embeddings import LangchainEmbeddingsWrapper
 from ragas.run_config import RunConfig
 from datasets import Dataset
 
-from app.core.settings import *
-from app.evaluation.config import CHECKPOINT_FILE,BATCH_SIZE
+from app.core.config import settings
+from app.evaluation.config import CHECKPOINT_FILE, BATCH_SIZE
 from app.llm.models import get_gemini_chat_model
 from app.llm.embeddings import get_gemini_embedding_model
 import pandas as pd
-from datasets import Dataset
 
 
 def _safe(row, col: str) -> float:

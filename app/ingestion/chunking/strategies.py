@@ -9,17 +9,21 @@ from langchain_text_splitters import (
     TokenTextSplitter,
 )
 
+from app.core.config import settings
 from app.core.logging import logger
-from app.core.settings import CHUNK_OVERLAP, CHUNK_SIZE
 from app.ingestion.chunking.base import BaseChunkerStrategy
 
 
 class RecursiveChunker(BaseChunkerStrategy):
     """General-purpose recursive character text splitter."""
 
-    def __init__(self, chunk_size: int = CHUNK_SIZE, chunk_overlap: int = CHUNK_OVERLAP):
-        self.chunk_size = chunk_size
-        self.chunk_overlap = chunk_overlap
+    def __init__(
+        self,
+        chunk_size: Optional[int] = None,
+        chunk_overlap: Optional[int] = None,
+    ):
+        self.chunk_size = chunk_size or settings.rag.chunk_size
+        self.chunk_overlap = chunk_overlap or settings.rag.chunk_overlap
         self.splitter = RecursiveCharacterTextSplitter(
             chunk_size=self.chunk_size,
             chunk_overlap=self.chunk_overlap,
@@ -46,9 +50,13 @@ class MarkdownHeaderChunker(BaseChunkerStrategy):
         ("###", "Header 3"),
     ]
 
-    def __init__(self, chunk_size: int = CHUNK_SIZE, chunk_overlap: int = CHUNK_OVERLAP):
-        self.chunk_size = chunk_size
-        self.chunk_overlap = chunk_overlap
+    def __init__(
+        self,
+        chunk_size: Optional[int] = None,
+        chunk_overlap: Optional[int] = None,
+    ):
+        self.chunk_size = chunk_size or settings.rag.chunk_size
+        self.chunk_overlap = chunk_overlap or settings.rag.chunk_overlap
         self.header_splitter = MarkdownHeaderTextSplitter(
             headers_to_split_on=self.HEADERS_TO_SPLIT_ON,
             strip_headers=False,
@@ -94,10 +102,15 @@ class CodeLanguageChunker(BaseChunkerStrategy):
         "html": Language.HTML,
     }
 
-    def __init__(self, language: str = "python", chunk_size: int = CHUNK_SIZE, chunk_overlap: int = CHUNK_OVERLAP):
+    def __init__(
+        self,
+        language: str = "python",
+        chunk_size: Optional[int] = None,
+        chunk_overlap: Optional[int] = None,
+    ):
         self.language_str = language
-        self.chunk_size = chunk_size
-        self.chunk_overlap = chunk_overlap
+        self.chunk_size = chunk_size or settings.rag.chunk_size
+        self.chunk_overlap = chunk_overlap or settings.rag.chunk_overlap
         lang_enum = self.LANGUAGE_ENUM_MAP.get(language.lower(), Language.PYTHON)
         
         self.splitter = RecursiveCharacterTextSplitter.from_language(
@@ -120,9 +133,13 @@ class CodeLanguageChunker(BaseChunkerStrategy):
 class TokenChunker(BaseChunkerStrategy):
     """Token-based text splitter for strict LLM token window constraints."""
 
-    def __init__(self, chunk_size: int = CHUNK_SIZE, chunk_overlap: int = CHUNK_OVERLAP):
-        self.chunk_size = chunk_size
-        self.chunk_overlap = chunk_overlap
+    def __init__(
+        self,
+        chunk_size: Optional[int] = None,
+        chunk_overlap: Optional[int] = None,
+    ):
+        self.chunk_size = chunk_size or settings.rag.chunk_size
+        self.chunk_overlap = chunk_overlap or settings.rag.chunk_overlap
         self.splitter = TokenTextSplitter(
             chunk_size=self.chunk_size,
             chunk_overlap=self.chunk_overlap,
@@ -142,9 +159,13 @@ class TokenChunker(BaseChunkerStrategy):
 class CharacterChunker(BaseChunkerStrategy):
     """Fixed-character text splitter."""
 
-    def __init__(self, chunk_size: int = CHUNK_SIZE, chunk_overlap: int = CHUNK_OVERLAP):
-        self.chunk_size = chunk_size
-        self.chunk_overlap = chunk_overlap
+    def __init__(
+        self,
+        chunk_size: Optional[int] = None,
+        chunk_overlap: Optional[int] = None,
+    ):
+        self.chunk_size = chunk_size or settings.rag.chunk_size
+        self.chunk_overlap = chunk_overlap or settings.rag.chunk_overlap
         self.splitter = CharacterTextSplitter(
             chunk_size=self.chunk_size,
             chunk_overlap=self.chunk_overlap,

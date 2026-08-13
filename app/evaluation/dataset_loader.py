@@ -5,9 +5,13 @@ import json
 
 def load_qa_pairs(num_pairs: int = NUM_PAIRS) -> list[dict]:
     if not RAW_VAL_PATH.exists():
-        print("[eval] Validation data not found. Downloading ...")
-        from app.retrieval.ingest_hotpotqa import download_hotpotqa
-        download_hotpotqa("validation")
+        print("[eval] Validation data file not found locally. Downloading via HuggingFace datasets...")
+        from datasets import load_dataset
+        ds = load_dataset("hotpot_qa", "distractor", split="validation")
+        RAW_VAL_PATH.parent.mkdir(parents=True, exist_ok=True)
+        raw_list = [{"question": row["question"], "answer": row["answer"]} for row in ds]
+        with open(RAW_VAL_PATH, "w", encoding="utf-8") as f:
+            json.dump(raw_list, f, indent=2)
 
     print(f"[eval] Loading from {RAW_VAL_PATH} ...")
     with open(RAW_VAL_PATH, encoding="utf-8") as f:

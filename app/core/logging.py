@@ -1,7 +1,7 @@
 import logging
 from logging.handlers import RotatingFileHandler
 import sys
-from app.core.settings import LOG_DIR
+from app.core.config import settings
 
 def setup_logger(name: str = "ragverse") -> logging.Logger:
     """
@@ -26,7 +26,7 @@ def setup_logger(name: str = "ragverse") -> logging.Logger:
     logger.addHandler(console_handler)
 
     # Rotating File Handler (10MB per file, max 5 backups)
-    log_file = LOG_DIR / "app.log"
+    log_file = settings.paths.log_dir / "app.log"
     file_handler = RotatingFileHandler(
         log_file,
         maxBytes=10 * 1024 * 1024,

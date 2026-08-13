@@ -1,8 +1,9 @@
 from pathlib import Path
 import os
+from app.core.config import settings
 
-EVAL_DIR = Path("data/eval")
-RAW_VAL_PATH = Path("data/raw/hotpotqa/validation.json")
+EVAL_DIR = settings.paths.eval_data_dir
+RAW_VAL_PATH = settings.paths.data_dir / "raw" / "hotpotqa" / "validation.json"
 
 RESULTS_CSV = EVAL_DIR / "baseline_results.csv"
 SUMMARY_CSV = EVAL_DIR / "baseline_summary.csv"

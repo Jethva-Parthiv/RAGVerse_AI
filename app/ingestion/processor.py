@@ -7,12 +7,8 @@ from typing import List, Optional
 
 from langchain_community.vectorstores import FAISS
 
+from app.core.config import settings
 from app.core.logging import logger
-from app.core.settings import (
-    FAISS_PATH,
-    RAW_DATA_DIR,
-    SUPPORTED_EXTENSIONS,
-)
 from app.ingestion.chunking.factory import ChunkerFactory
 from app.ingestion.loaders.factory import LoaderFactory
 from app.llm.embeddings import get_huggingface_embedding_model
@@ -24,8 +20,8 @@ class IngestionProcessor:
     chunking, metadata enrichment, and vector database indexing.
     """
 
-    def __init__(self, output_index_path: str = FAISS_PATH):
-        self.output_index_path = output_index_path
+    def __init__(self, output_index_path: Optional[str] = None):
+        self.output_index_path = output_index_path or settings.vector_db.faiss_path
 
     def process_file(
         self,
@@ -73,21 +69,22 @@ class IngestionProcessor:
 
     def process_directory(
         self,
-        source_dir: Path | str = RAW_DATA_DIR,
+        source_dir: Optional[Path | str] = None,
         strategy_name: Optional[str] = None,
     ) -> List:
         """
         Recursively scans source directory for supported files and processes them.
         Isolates per-file errors to prevent complete pipeline failures.
         """
-        data_path = Path(source_dir).resolve()
+        target_dir = source_dir or settings.paths.raw_data_dir
+        data_path = Path(target_dir).resolve()
         if not data_path.exists():
             logger.warning(f"Source directory '{data_path}' does not exist. Creating it.")
             data_path.mkdir(parents=True, exist_ok=True)
             return []
 
         supported_files: List[Path] = []
-        for ext in SUPPORTED_EXTENSIONS:
+        for ext in settings.rag.supported_extensions:
             supported_files.extend(list(data_path.rglob(f"*{ext}")))
 
         if not supported_files:

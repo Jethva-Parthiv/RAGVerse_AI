@@ -1,88 +1,70 @@
-from pathlib import Path
+"""
+RAGVerse_AI Central Configuration Settings
+-------------------------------------------
+Pipes structured settings from `app.core.config` into convenient top-level constants
+and exports the `settings` singleton instance.
+"""
 
-from dotenv import load_dotenv
-import os
-
-
-# Load environment variables
-load_dotenv()
-
+from app.core.config import AppConfig, get_settings, settings
 
 # -----------------------------------
 # BASE PATHS
 # -----------------------------------
-
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
-DATA_DIR = BASE_DIR / "data"
-PROCESSED_DATA_DIR = DATA_DIR / "processed"
-RAW_DATA_DIR = DATA_DIR / "raw/documents"
-EVAL_DATA_DIR = DATA_DIR / "eval"
-LOG_DIR = BASE_DIR / "logs"
-
-# Ensure directories exist
-for path in [DATA_DIR, PROCESSED_DATA_DIR, RAW_DATA_DIR, EVAL_DATA_DIR, LOG_DIR]:
-    path.mkdir(parents=True, exist_ok=True)
-
+BASE_DIR = settings.paths.base_dir
+DATA_DIR = settings.paths.data_dir
+PROCESSED_DATA_DIR = settings.paths.processed_data_dir
+RAW_DATA_DIR = settings.paths.raw_data_dir
+EVAL_DATA_DIR = settings.paths.eval_data_dir
+LOG_DIR = settings.paths.log_dir
 
 # -----------------------------------
 # MODELS
 # -----------------------------------
-
-CHAT_MODEL_NAME = os.getenv(
-    "CHAT_MODEL_NAME",
-    "gemini-3.1-flash-lite"
-)
-
-GEMINI_EMBEDDING_MODEL_NAME = os.getenv(
-    "GEMINI_EMBEDDING_MODEL_NAME",
-    "gemini-embedding-001"
-)
-
-HUGGINGFACE_EMBEDDING_MODEL_NAME = os.getenv(
-    "HUGGINGFACE_EMBEDDING_MODEL_NAME",
-    "BAAI/bge-base-en-v1.5"
-)
+CHAT_MODEL_NAME = settings.models.chat_model_name
+GEMINI_EMBEDDING_MODEL_NAME = settings.models.gemini_embedding_model_name
+HUGGINGFACE_EMBEDDING_MODEL_NAME = settings.models.huggingface_embedding_model_name
 
 # -----------------------------------
 # RAG CONFIG
 # -----------------------------------
-
-TOP_K_RESULTS = int(
-    os.getenv("TOP_K_RESULTS", 5)
-)
-
-CHUNK_SIZE = int(
-    os.getenv("CHUNK_SIZE", 1000)
-)
-
-CHUNK_OVERLAP = int(
-    os.getenv("CHUNK_OVERLAP", 200)
-)
-
-SUPPORTED_EXTENSIONS = [
-    ".pdf", ".md", ".markdown", ".docx", ".html", ".htm", ".txt",
-    ".py", ".js", ".ts", ".json", ".csv", ".yaml", ".yml"
-]
-
+TOP_K_RESULTS = settings.rag.top_k_results
+CHUNK_SIZE = settings.rag.chunk_size
+CHUNK_OVERLAP = settings.rag.chunk_overlap
+SUPPORTED_EXTENSIONS = settings.rag.supported_extensions
 
 # -----------------------------------
-# VECTOR DATABASE (FAISS / QDRANT)
+# VECTOR DATABASE
 # -----------------------------------
-
-FAISS_PATH = str(
-    PROCESSED_DATA_DIR / "faiss_index"
-)
-
-QDRANT_HOST = os.getenv("QDRANT_HOST", "localhost")
-QDRANT_PORT = int(os.getenv("QDRANT_PORT", 6333))
-QDRANT_COLLECTION_NAME = os.getenv("QDRANT_COLLECTION_NAME", "langchain_docs")
-
+FAISS_PATH = settings.vector_db.faiss_path
+QDRANT_HOST = settings.vector_db.qdrant_host
+QDRANT_PORT = settings.vector_db.qdrant_port
+QDRANT_COLLECTION_NAME = settings.vector_db.qdrant_collection_name
 
 # -----------------------------------
 # DATABASE
 # -----------------------------------
+DATABASE_URL = settings.database.database_url
 
-DATABASE_URL = os.getenv(
-    "DATABASE_URL"
-)
+__all__ = [
+    "settings",
+    "get_settings",
+    "AppConfig",
+    "BASE_DIR",
+    "DATA_DIR",
+    "PROCESSED_DATA_DIR",
+    "RAW_DATA_DIR",
+    "EVAL_DATA_DIR",
+    "LOG_DIR",
+    "CHAT_MODEL_NAME",
+    "GEMINI_EMBEDDING_MODEL_NAME",
+    "HUGGINGFACE_EMBEDDING_MODEL_NAME",
+    "TOP_K_RESULTS",
+    "CHUNK_SIZE",
+    "CHUNK_OVERLAP",
+    "SUPPORTED_EXTENSIONS",
+    "FAISS_PATH",
+    "QDRANT_HOST",
+    "QDRANT_PORT",
+    "QDRANT_COLLECTION_NAME",
+    "DATABASE_URL",
+]

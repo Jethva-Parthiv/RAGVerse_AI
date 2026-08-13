@@ -2,7 +2,7 @@ from psycopg import connect
 from psycopg.errors import OperationalError
 from langgraph.checkpoint.postgres import PostgresSaver
 
-from app.core.settings import DATABASE_URL
+from app.core.config import settings
 
 
 def get_postgres_checkpointer() -> PostgresSaver:
@@ -12,7 +12,7 @@ def get_postgres_checkpointer() -> PostgresSaver:
 
     try:
         conn = connect(
-            conninfo=DATABASE_URL,
+            conninfo=settings.database.database_url,
             autocommit=True,
         )
 

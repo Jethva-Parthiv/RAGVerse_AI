@@ -18,16 +18,16 @@ from typing import Optional
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 
-from app.core.settings import TOP_K_RESULTS, FAISS_PATH
+from app.core.config import settings
 from app.core.logging import logger
 from app.llm.embeddings import get_huggingface_embedding_model
 from app.llm.models import get_gemini_chat_model
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-DENSE_TOP_K       = int(TOP_K_RESULTS * 4)   # fetch more candidates, re-rank later
-MULTI_QUERY_COUNT = 3                         # number of query variants
-RERANK_TOP_N      = TOP_K_RESULTS             # final docs passed to LLM
+DENSE_TOP_K       = int(settings.rag.top_k_results * 4)   # fetch more candidates, re-rank later
+MULTI_QUERY_COUNT = 3                                     # number of query variants
+RERANK_TOP_N      = settings.rag.top_k_results            # final docs passed to LLM
 RERANK_MODEL      = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 BM25_WEIGHT       = 0.3   # weight for BM25 scores in hybrid merge
 DENSE_WEIGHT      = 0.7   # weight for dense scores in hybrid merge
@@ -82,14 +82,15 @@ def expand_queries(question: str, n: int = MULTI_QUERY_COUNT) -> list[str]:
 
 @lru_cache(maxsize=1)
 def _load_faiss() -> Optional[FAISS]:
-    faiss_dir = Path(FAISS_PATH)
+    faiss_path = settings.vector_db.faiss_path
+    faiss_dir = Path(faiss_path)
     if not faiss_dir.exists() or not (faiss_dir / "index.faiss").exists():
-        logger.warning(f"[dense] FAISS index path '{FAISS_PATH}' does not exist.")
+        logger.warning(f"[dense] FAISS index path '{faiss_path}' does not exist.")
         return None
 
     emb = get_huggingface_embedding_model()
     return FAISS.load_local(
-        FAISS_PATH,
+        faiss_path,
         emb,
         allow_dangerous_deserialization=True,
     )

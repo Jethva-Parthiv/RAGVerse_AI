@@ -5,10 +5,15 @@ from pathlib import Path
 from rich.console import Console
 from rich.panel import Panel
 
-from app.core.logging import logger
-from app.core.settings import FAISS_PATH, RAW_DATA_DIR
-from app.ingestion.processor import IngestionProcessor
 from typing import Optional
+
+from rich.console import Console
+from rich.panel import Panel
+
+from app.core.config import settings
+from app.core.logging import logger
+from app.ingestion.processor import IngestionProcessor
+
 console = Console()
 
 
@@ -16,30 +21,32 @@ def run_ingestion(
     source_dir: Optional[str] = None,
     file_path: Optional[str] = None,
     strategy: Optional[str] = None,
-    output_path: str = FAISS_PATH,
+    output_path: Optional[str] = None,
 ) -> None:
     """
     Main entry point for document ingestion.
     Processes specified file or directory and builds the vector index.
     """
+    target_raw_dir = source_dir or str(settings.paths.raw_data_dir)
+    target_output_path = output_path or settings.vector_db.faiss_path
+
     console.print(
         Panel.fit(
             "[bold cyan]RAGVerse Ingestion Pipeline[/bold cyan]\n"
-            f"[yellow]Source Dir:[/yellow] {source_dir or RAW_DATA_DIR}\n"
-            f"[yellow]Target Vector Store:[/yellow] {output_path}\n"
+            f"[yellow]Source Dir:[/yellow] {target_raw_dir}\n"
+            f"[yellow]Target Vector Store:[/yellow] {target_output_path}\n"
             f"[yellow]Strategy Override:[/yellow] {strategy or 'Auto-select'}",
             title="Document Ingestion Engine",
             border_style="cyan",
         )
     )
 
-    processor = IngestionProcessor(output_index_path=output_path)
+    processor = IngestionProcessor(output_index_path=target_output_path)
 
     if file_path:
         chunks = processor.process_file(file_path, strategy_name=strategy)
     else:
-        target_dir = source_dir or RAW_DATA_DIR
-        chunks = processor.process_directory(target_dir, strategy_name=strategy)
+        chunks = processor.process_directory(target_raw_dir, strategy_name=strategy)
 
     if chunks:
         processor.build_and_save_index(chunks)
@@ -65,8 +72,8 @@ def main() -> None:
     parser.add_argument(
         "--source-dir",
         type=str,
-        default=str(RAW_DATA_DIR),
-        help=f"Path to raw documents directory (default: {RAW_DATA_DIR})",
+        default=str(settings.paths.raw_data_dir),
+        help=f"Path to raw documents directory (default: {settings.paths.raw_data_dir})",
     )
     parser.add_argument(
         "--file-path",
@@ -84,8 +91,8 @@ def main() -> None:
     parser.add_argument(
         "--output-path",
         type=str,
-        default=FAISS_PATH,
-        help=f"Path to output vector index (default: {FAISS_PATH})",
+        default=settings.vector_db.faiss_path,
+        help=f"Path to output vector index (default: {settings.vector_db.faiss_path})",
     )
 
     args = parser.parse_args()

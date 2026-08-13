@@ -89,15 +89,9 @@ Key directories and responsibilities:
 #### `app/main.py` / `run.py`
 - `app/main.py` is a thin entrypoint used by `run.py`.
 
-#### `app/api/`
-- **`app/api/routes.py`**: API routing (FastAPI routes). (Not fully inspected in provided context.)
-
-#### `app/cli/`
-- **`app/cli/chat_cli.py`**: CLI utilities (not inspected in provided context).
-
 #### `app/core/`
 - **`core/settings.py`**: central configuration (model names, FAISS path, chunking params, database URL).
-- **`core/config.py`**, **`core/logging.py`**: not inspected here, but likely support runtime configuration and logging.
+- **`core/logging.py`**: structured application logging setup.
 
 #### `app/database/`
 - **`database/postgres.py`**: creates a `PostgresSaver` checkpointer from `DATABASE_URL`.
@@ -119,9 +113,9 @@ Key directories and responsibilities:
 - **`ingestion/ingest.py`**: CLI entry point (`python -m app.ingestion.ingest`).
 
 #### `app/retrieval/`
-- **`retrieval/retriever.py`**: a simple FAISS retriever loader.
+- **`retrieval/retriever.py`**: simple FAISS retriever loader.
 - **`retrieval/advanced_retriever.py`**: multi-query + hybrid BM25+dense + cross-encoder re-ranking.
-- **`retrieval/vectorstore.py`**: vectorstore utilities.
+- **`retrieval/iterative_retriever.py`**: multi-step iterative retrieval logic.
 
 #### `app/services/`
 - **`services/chat_service.py`**: wraps the LangGraph invocation; converts state into a final string via `StrOutputParser`.
@@ -134,9 +128,6 @@ Key directories and responsibilities:
 - **`evaluation/report_generator.py`**: formats a human-readable report (worst cases and recommendations).
 - **`evaluation/compare_scores.py`**: compares baseline summary rows.
 - **`evaluation/config.py`**: evaluation constants (batch size, checkpoint path, default number of pairs).
-
-#### `app/utils/`
-- formatting/validators/helpers (not inspected in provided context).
 
 ### `data/`
 - **`data/raw/`**: raw HotpotQA datasets (e.g., `hotpotqa/train.json`, `hotpotqa/validation.json`).
